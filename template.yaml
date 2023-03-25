@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Sentiment Analysis API
+  
+  Provided by AWSLambdas.com
+
+Parameters:
+  OpenAPIKey:
+    Type: String
+    Description: The OpenAI API Key
+
+Resources:
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: api
+  SentimentAnalysisFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Environment:
+        Variables:
+          OPENAI_API_KEY: !Ref OpenAPIKey
+      Events:
+        Numpy:
+          Type: Api
+          Properties:
+            Path: /v1/analysis/text
+            Method: post
+            RestApiId: !Ref ApiGateway
+
+Outputs:
+  NumpyApi:
+    Description: "API URL"
+    Value: !Sub "https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/api/v1/analysis/text"
+  SentimentAnalysisFunction:
+    Description: "Sentiment Analysis Function ARN"
+    Value: !GetAtt SentimentAnalysisFunction.Arn
+  SentimentAnalysisFunctionIamRole:
+    Description: "Implicit IAM Role created for the Sentiment Analysis Function"
+    Value: !GetAtt SentimentAnalysisFunctionRole.Arn
