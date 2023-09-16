@@ -20,7 +20,7 @@ and the [AWS Serverless Application Model (SAM)](https://docs.aws.amazon.com/ser
 
 ## Get a copy
 ```
-git clone https://github.com/AwsLambdas/aws-lambda-sentiment-analysis-gpt.git
+git clone https://github.com/mlpacks/aws-lambda-sentiment-analysis-gpt.git
 ```
 
 ## Set your OpenAI API Key as an environment variable
